@@ -73,7 +73,7 @@ dns-anchor:
 dns:
   enable: true
   listen: 0.0.0.0:1053
-  ipv6: true
+  ipv6: false
   enhanced-mode: fake-ip
   cache-algorithm: arc
   fake-ip-range: 198.18.0.0/16
@@ -87,7 +87,11 @@ dns:
   direct-nameserver: ["system"]
   default-nameserver: ["223.5.5.5", "119.29.29.29", "114.114.114.114", "180.76.76.76"]
   nameserver: ["https://dns.alidns.com/dns-query", "https://1.1.1.1/dns-query", "https://doh.pub/dns-query", "https://dns.google/dns-query", "https://dns.quad9.net/dns-query", "https://dns.adguard.com/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]
-  proxy-server-nameserver: ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://cloudflare-dns.com/dns-query", "https://dns.quad9.net/dns-query", "https://dns.adguard.com/dns-query", "https://public.dns.iij.jp/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]  
+  #proxy-server-nameserver: ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://cloudflare-dns.com/dns-query", "https://dns.quad9.net/dns-query", "https://dns.adguard.com/dns-query", "https://public.dns.iij.jp/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]  
+  #解决直连访问apple store失败的问题，使用国内DNS解析apple相关域名
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
   direct-nameserver-follow-policy: true
   nameserver-policy:
     "rule-set:PersonalUseProxy": *global-dns
@@ -187,9 +191,9 @@ tunnels:
   - {network: [tcp, udp], address: 127.0.0.1:7702, target: www.googleapis.com:443, proxy: "🌐Google服务"}
 
 rules:
+  - RULE-SET,reject,REJECT
   - RULE-SET,PersonalUseProxy,🌍全球加速
   - RULE-SET,PersonalUseDirect,🎯直连
-  - RULE-SET,reject,REJECT
   - RULE-SET,TikTok-zj,🎬TikTok
   - RULE-SET,douyin-zj,🎷抖音
   - RULE-SET,OpenAI-zj,🧠OpenAI
