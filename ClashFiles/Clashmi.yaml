@@ -90,7 +90,8 @@ dns:
   proxy-server-nameserver: ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://cloudflare-dns.com/dns-query", "https://dns.quad9.net/dns-query", "https://dns.adguard.com/dns-query", "https://public.dns.iij.jp/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]  
   direct-nameserver-follow-policy: true
   nameserver-policy:
-    "rule-set:PersonalUse": *global-dns
+    "rule-set:PersonalUseProxy": *global-dns
+    "rule-set:PersonalUseDirect": *global-dns
     "rule-set:reject": ["https://dns.adguard.com/dns-query"]
     "rule-set:Google-zj": *global-dns
     "rule-set:OpenAI-zj": *global-dns
@@ -186,7 +187,8 @@ tunnels:
   - {network: [tcp, udp], address: 127.0.0.1:7702, target: www.googleapis.com:443, proxy: "🌐Google服务"}
 
 rules:
-  - RULE-SET,PersonalUse,🎯直连
+  - RULE-SET,PersonalUseProxy,🌍全球加速
+  - RULE-SET,PersonalUseDirect,🎯直连
   - RULE-SET,reject,REJECT
   - RULE-SET,TikTok-zj,🎬TikTok
   - RULE-SET,douyin-zj,🎷抖音
@@ -230,7 +232,8 @@ rule-anchor:
   class-yaml: &class-yaml {type: http, behavior: classical, interval: 86400, format: yaml}
   
 rule-providers:
-  PersonalUse: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/ClashFiles/PersonalUse.yaml"}
+  PersonalUseProxy: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/ClashFiles/PersonalUseProxy.yaml"}
+  PersonalUseDirect: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/ClashFiles/PersonalUseDirect.yaml"}
   reject: {<<: *mrs-domain, url: "https://gh-proxy.com/https://raw.githubusercontent.com/bgpeer/rules/main/geo/geosite/category-ads-all.mrs"}
   douyin-zj: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/bgpeer/rules/main/geo/geosite/bytedance.yaml"}
   TikTok-zj: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/bgpeer/rules/main/geo/geosite/tiktok.yaml"}
