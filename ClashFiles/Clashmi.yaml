@@ -29,7 +29,7 @@ allow-lan: true
 keep-alive-idle: 300
 keep-alive-interval: 30
 bind-address: "*"
-authentication: ["meta:88888888"]
+authentication: ["admin:xy950728yx"]
 skip-auth-prefixes: ["127.0.0.1/8", "::1/128"]
 lan-allowed-ips: ["0.0.0.0/0", "::/0"]
 lan-disallowed-ips: []
@@ -42,7 +42,7 @@ external-controller-cors:
   allow-origins: ["*"]
   allow-private-network: true
 external-controller: 127.0.0.1:9092
-secret: "88888888"
+secret: "xy950728yx"
 external-ui: './ui'
 external-ui-name: zashboard
 external-ui-url: "https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages"
@@ -58,8 +58,8 @@ tun:
   auto-route: true
   auto-redirect: true
   auto-detect-interface: true
-  gso: true
-  gso-max-size: 65536
+  gso: false
+  # gso-max-size: 65536  # iOS 不支持 GSO，已禁用
   endpoint-independent-nat: true
   udp-timeout: 60
   disable-icmp-forwarding: true
@@ -72,8 +72,8 @@ dns-anchor:
 
 dns:
   enable: true
-  listen: 0.0.0.0:1053
-  ipv6: false
+  listen: 0.0.0.0:10535
+  ipv6: true
   enhanced-mode: fake-ip
   cache-algorithm: arc
   fake-ip-range: 198.18.0.0/16
@@ -85,17 +85,14 @@ dns:
   fake-ip-ttl: 60
   fake-ip-filter: ["localhost","+.lan","+.local","+.arpa","+.ntp.org","captive.apple.com","connectivitycheck.gstatic.com","msftconnecttest.com","msftncsi.com","openai.*","+.openai.*","report-v2.samsung.japps.cn","rule-set:private"]
   direct-nameserver: ["system"]
-  #default-nameserver: ["223.5.5.5", "119.29.29.29", "114.114.114.114", "180.76.76.76"]
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-  #nameserver: ["https://dns.alidns.com/dns-query", "https://1.1.1.1/dns-query", "https://doh.pub/dns-query", "https://dns.google/dns-query", "https://dns.quad9.net/dns-query", "https://dns.adguard.com/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]
   nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
     - https://1.1.1.1/dns-query
-  #proxy-server-nameserver: ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://cloudflare-dns.com/dns-query", "https://dns.quad9.net/dns-query", "https://dns.adguard.com/dns-query", "https://public.dns.iij.jp/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]  
-  #解决直连访问apple store失败的问题，使用国内DNS解析apple相关域名
+  # 解决直连访问 Apple 相关服务失败的问题，使用国内 DNS 解析
   proxy-server-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -123,7 +120,7 @@ dns:
     "rule-set:Apple": *global-dns
     "rule-set:icloud": *global-dns
     "rule-set:douyin-zj": *cn-dns
-    "rule-set:Cryptocurrency": *cn-dns
+    "rule-set:Cryptocurrency": *global-dns
     "rule-set:bilibili": *cn-dns
     "rule-set:xiaohongshu": *cn-dns
     "rule-set:Alibaba": *cn-dns
