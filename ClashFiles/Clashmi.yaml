@@ -83,7 +83,7 @@ dns:
   respect-rules: true
   fake-ip-filter-mode: blacklist
   fake-ip-ttl: 60
-  fake-ip-filter: ["localhost","+.lan","+.local","+.arpa","+.ntp.org","captive.apple.com","connectivitycheck.gstatic.com","msftconnecttest.com","msftncsi.com","openai.*","+.openai.*","report-v2.samsung.japps.cn","rule-set:private"]
+  fake-ip-filter: ["localhost","+.lan","+.local","+.arpa","+.ntp.org","captive.apple.com","+.apple.com","+.itunes.apple.com","+.apps.apple.com","+.appstore.com","connectivitycheck.gstatic.com","msftconnecttest.com","msftncsi.com","openai.*","+.openai.*","report-v2.samsung.japps.cn","rule-set:private"]
   direct-nameserver: ["system"]
   default-nameserver:
     - 223.5.5.5
@@ -117,8 +117,8 @@ dns:
     "rule-set:gfw": *global-dns
     "rule-set:greatfire": *global-dns
     "rule-set:geolocation-!cn": *global-dns
-    "rule-set:Apple": *global-dns
-    "rule-set:icloud": *global-dns
+    "rule-set:Apple": *cn-dns
+    "rule-set:icloud": *cn-dns
     "rule-set:douyin-zj": *cn-dns
     "rule-set:Cryptocurrency": *global-dns
     "rule-set:bilibili": *cn-dns
@@ -144,7 +144,7 @@ sniffer:
   override-destination: true
   sniff: {HTTP: {ports: [80, 8080-8880], override-destination: true}, TLS: {ports: [443, 8443]}, QUIC: {ports: [443, 8443]}}
   force-domain: ["+.cloudflare.net","+.akamaized.net","+.akamai.net","+.fastly.net","+.cloudfront.net","+.googlevideo.com","+.ytimg.com","+.youtube.com","+.netflix.com","+.instagram.com","+.tiktokcdn.com","+.tiktokv.com","+.douyin.com","+.douyincdn.com","+.telegram.org","+.t.me","+.tdesktop.com","+.cdn-telegram.org","+.telegram-cdn.org"]
-  skip-domain: ["localhost","+.lan","+.local","+.arpa","+.invalid","+.test","+.push.apple.com","+.pvp.net","+.riotgames.com","+.openai.com","+.oaistatic.com","+.oaiusercontent.com","+.chatgpt.com"]
+  skip-domain: ["localhost","+.lan","+.local","+.arpa","+.invalid","+.test","+.push.apple.com","+.apple.com","+.itunes.apple.com","+.apps.apple.com","+.mzstatic.com","+.icloud.com","+.icloud-content.com","+.pvp.net","+.riotgames.com","+.openai.com","+.oaistatic.com","+.oaiusercontent.com","+.chatgpt.com"]
   skip-src-address: ["127.0.0.0/8","::1/128"]
   skip-dst-address: ["17.0.0.0/8","149.154.160.0/20","91.108.0.0/16"]
 
