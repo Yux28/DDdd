@@ -68,7 +68,8 @@ tun:
 
 dns-anchor:
   cn-dns: &cn-dns ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query"]
-  global-dns: &global-dns ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://dns.quad9.net/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]
+  global-dns: &global-dns ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://dns.quad9.net/dns-query", "https://dns.cloudflare.com/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853", "https://dns.alidns.com/dns-query"]
+  #global-dns: &global-dns ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://dns.quad9.net/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]
 
 dns:
   enable: true
