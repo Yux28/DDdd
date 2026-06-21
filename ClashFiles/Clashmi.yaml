@@ -29,7 +29,7 @@ allow-lan: true
 keep-alive-idle: 300
 keep-alive-interval: 30
 bind-address: "*"
-authentication: ["admin:xy950728yx"]
+authentication: ["admin:88888888"]
 skip-auth-prefixes: ["127.0.0.1/8", "::1/128"]
 lan-allowed-ips: ["0.0.0.0/0", "::/0"]
 lan-disallowed-ips: []
@@ -42,7 +42,7 @@ external-controller-cors:
   allow-origins: ["*"]
   allow-private-network: true
 external-controller: 127.0.0.1:9092
-secret: "xy950728yx"
+secret: "88888888"
 external-ui: './ui'
 external-ui-name: zashboard
 external-ui-url: "https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages"
