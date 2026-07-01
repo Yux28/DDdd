@@ -83,6 +83,7 @@ sniffer:
       override-destination: true
   force-dns-mapping: true       # 强制 DNS 映射，防止 DNS 泄漏
   parse-pure-ip: true           # 解析纯 IP 请求的 SNI
+  # iOS 注意: 若启动报错可尝试将 sniffer.enable 改为 false
 
 
 # ============================================================================
@@ -92,7 +93,7 @@ dns:
   enable: true
   listen: 0.0.0.0:1053
   ipv6: true
-  prefer-h3: true               # HTTP/3 DNS（更快握手）
+  # prefer-h3: true             # iOS 上可能导致 DNS 异常，保持注释
 
   # 解析 DoH / DoT 服务器域名时使用的上游 DNS
   default-nameserver:
@@ -146,6 +147,7 @@ dns:
       - +.openai.com
 
   # ---- 按域名指定 DNS 服务器 ----
+  # 注意: 以下策略依赖 geosite.dat，iOS 首次启动需等文件下载完毕
   nameserver-policy:
     "geosite:cn":
       - https://doh.pub/dns-query
@@ -153,11 +155,21 @@ dns:
     "geosite:geolocation-!cn":
       - https://dns.google/dns-query
       - https://cloudflare-dns.com/dns-query
+    # 关键 CDN 域名强制国内 DNS（规则集 / geo 数据下载依赖）
+    "+.jsdelivr.net":
+      - https://doh.pub/dns-query
+      - 223.5.5.5
+    "+.githubusercontent.com":
+      - https://doh.pub/dns-query
+      - 223.5.5.5
 
 
 # ============================================================================
 #                         GeoIP / GeoSite 数据库
 # ============================================================================
+# iOS 注意: geodata-mode 开启时启动会自动下载 geo 文件，若代理尚未就绪
+# 可能下载失败导致 GEOIP/GEOSITE 规则异常。建议 iOS 首次启动时先在WiFi下
+# 等待 1-2 分钟让文件下载完毕，之后可正常使用。
 geodata-mode: true
 geox-url:
   geoip: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat"
@@ -430,6 +442,11 @@ rule-providers:
 #        MATCH,<兜底代理组>
 
 rules:
+
+  # ---- 规则集 CDN (必须直连，否则规则集无法下载) ----
+  - DOMAIN-SUFFIX,cdn.jsdelivr.net,🎯 全球直连
+  - DOMAIN-SUFFIX,jsdelivr.net,🎯 全球直连
+  - DOMAIN-SUFFIX,githubusercontent.com,🎯 全球直连
 
   # ---- 广告 / 追踪 (最高优先级) ----
   - RULE-SET,reject,🛑 广告拦截
