@@ -2,17 +2,17 @@
 # 2把我的配置全部复制到编辑器里面，把下面的_#机场订阅_换成自己的机场链接，可放入3个机场
 # 3然后保存__名称.yaml_文件格式到本地，导入软件就可以使用了（只支持mihomo核）
 # 4用此配置可以关闭软件里的所有复写
-p: &p {type: http, interval: 0, proxy: 🌍全球加速, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300}}
+p: &p {type: http, interval: 86400, proxy: 🌍全球加速, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300}}
 proxy-providers:
   # 这是机场配置 🔻，将下面的_#机场订阅_换成自己的机场链接，保留两边的引号符
-  NoMoreWalls: {<<: *p, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/ClashFiles/list.meta.yml"}
-  # 机场2: {<<: *p, url: "#机场订阅", override: {additional-prefix: "²"}}  , override: {additional-prefix: "¹"}
-  # 机场3: {<<: *p, url: "#机场订阅", override: {additional-prefix: "³"}}
+  NoMoreWalls: {<<: *p, url: "https://gh-proxy.com/https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.meta.yml", override: {additional-prefix: "¹"}}
+  #机场2: {<<: *p, url: "https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.meta.yml", override: {additional-prefix: "²"}}
+  #机场3: {<<: *p, url: "https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.meta.yml", override: {additional-prefix: "³"}}
 
-port: 7896
-socks-port: 7891
-redir-port: 7892
-tproxy-port: 7894
+#port: 7896
+#socks-port: 7891
+#redir-port: 7892
+#tproxy-port: 7894
 mixed-port: 7893  
 mode: rule
 log-level: warning
@@ -25,24 +25,24 @@ unified-delay: true
 tcp-concurrent: true
 inbound-tfo: true
 inbound-mptcp: false
-allow-lan: true
+allow-lan: false
 keep-alive-idle: 300
 keep-alive-interval: 30
 bind-address: "*"
-authentication: ["meta:88888888"]
+authentication: ["admin:20262026"]
 skip-auth-prefixes: ["127.0.0.1/8", "::1/128"]
 lan-allowed-ips: ["0.0.0.0/0", "::/0"]
 lan-disallowed-ips: []
 global-ua: "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36"
 profile: {store-selected: true, store-fake-ip: true}
-ntp: {enable: true, server: time.apple.com, port: 123, interval: 30, dialer-proxy: "", write-to-system: false}
+ntp: {enable: true, server: time.apple.com, port: 123, interval: 180, dialer-proxy: "", write-to-system: false}
 experimental: {quic-go-disable-ecn: true}
 
 external-controller-cors:
   allow-origins: ["*"]
   allow-private-network: true
 external-controller: 127.0.0.1:9092
-secret: "88888888"
+secret: "20262026"
 external-ui: './ui'
 external-ui-name: zashboard
 external-ui-url: "https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages"
@@ -58,21 +58,22 @@ tun:
   auto-route: true
   auto-redirect: true
   auto-detect-interface: true
-  gso: true
-  gso-max-size: 65536
+  gso: false
+  # gso-max-size: 65536  # iOS 不支持 GSO，已禁用
   endpoint-independent-nat: true
   udp-timeout: 60
   disable-icmp-forwarding: true
   route-exclude-address-set: [private-ip]
-  route-exclude-cidr: ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12", "100.64.0.0/10", "fc00::/7", "fe80::/10"]
+  #route-exclude-cidr: ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12", "100.64.0.0/10", "fc00::/7", "fe80::/10"]
 
 dns-anchor:
   cn-dns: &cn-dns ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query"]
+  #global-dns: &global-dns ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://dns.quad9.net/dns-query", "https://dns.cloudflare.com/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853", "https://dns.alidns.com/dns-query"]
   global-dns: &global-dns ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://dns.quad9.net/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]
 
 dns:
   enable: true
-  listen: 0.0.0.0:1053
+  listen: 0.0.0.0:10535
   ipv6: true
   enhanced-mode: fake-ip
   cache-algorithm: arc
@@ -83,16 +84,26 @@ dns:
   respect-rules: true
   fake-ip-filter-mode: blacklist
   fake-ip-ttl: 60
-  fake-ip-filter: ["localhost","+.lan","+.local","+.arpa","+.ntp.org","captive.apple.com","connectivitycheck.gstatic.com","msftconnecttest.com","msftncsi.com","openai.*","+.openai.*","report-v2.samsung.japps.cn","rule-set:private"]
-  direct-nameserver: ["system"]
-  default-nameserver: ["223.5.5.5", "119.29.29.29", "114.114.114.114", "180.76.76.76"]
-  nameserver: ["https://dns.alidns.com/dns-query", "https://1.1.1.1/dns-query", "https://doh.pub/dns-query", "https://dns.google/dns-query", "https://dns.quad9.net/dns-query", "https://dns.adguard.com/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]
-  proxy-server-nameserver: ["https://1.1.1.1/dns-query", "https://dns.google/dns-query", "https://cloudflare-dns.com/dns-query", "https://dns.quad9.net/dns-query", "https://dns.adguard.com/dns-query", "https://public.dns.iij.jp/dns-query", "tls://cloudflare-dns.com:853", "tls://dns.google:853"]  
+  fake-ip-filter: ["localhost","+.lan","+.local","+.arpa","+.ntp.org","captive.apple.com","+.apple.com","+.itunes.apple.com","+.apps.apple.com","+.appstore.com","connectivitycheck.gstatic.com","msftconnecttest.com","msftncsi.com","openai.*","+.openai.*","report-v2.samsung.japps.cn","rule-set:private"]
+  direct-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    *cn-dns
+    #- https://dns.alidns.com/dns-query
+    #- https://doh.pub/dns-query
+    #- https://1.1.1.1/dns-query
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
   direct-nameserver-follow-policy: true
   nameserver-policy:
-    "rule-set:reject": ["https://dns.adguard.com/dns-query"]
     "rule-set:PersonalUseProxy": *global-dns
     "rule-set:PersonalUseDirect": *cn-dns
+    "rule-set:reject": ["https://dns.adguard.com/dns-query"]
     "rule-set:Google-zj": *global-dns
     "rule-set:OpenAI-zj": *global-dns
     "rule-set:Claude-zj": *global-dns
@@ -109,10 +120,10 @@ dns:
     "rule-set:gfw": *global-dns
     "rule-set:greatfire": *global-dns
     "rule-set:geolocation-!cn": *global-dns
-    "rule-set:Apple": *global-dns
-    "rule-set:icloud": *global-dns
+    "rule-set:Apple": *cn-dns
+    "rule-set:icloud": *cn-dns
     "rule-set:douyin-zj": *cn-dns
-    "rule-set:Cryptocurrency": *cn-dns
+    "rule-set:Cryptocurrency": *global-dns
     "rule-set:bilibili": *cn-dns
     "rule-set:xiaohongshu": *cn-dns
     "rule-set:Alibaba": *cn-dns
@@ -136,7 +147,7 @@ sniffer:
   override-destination: true
   sniff: {HTTP: {ports: [80, 8080-8880], override-destination: true}, TLS: {ports: [443, 8443]}, QUIC: {ports: [443, 8443]}}
   force-domain: ["+.cloudflare.net","+.akamaized.net","+.akamai.net","+.fastly.net","+.cloudfront.net","+.googlevideo.com","+.ytimg.com","+.youtube.com","+.netflix.com","+.instagram.com","+.tiktokcdn.com","+.tiktokv.com","+.douyin.com","+.douyincdn.com","+.telegram.org","+.t.me","+.tdesktop.com","+.cdn-telegram.org","+.telegram-cdn.org"]
-  skip-domain: ["localhost","+.lan","+.local","+.arpa","+.invalid","+.test","+.push.apple.com","+.pvp.net","+.riotgames.com","+.openai.com","+.oaistatic.com","+.oaiusercontent.com","+.chatgpt.com"]
+  skip-domain: ["localhost","+.lan","+.local","+.arpa","+.invalid","+.test","+.push.apple.com","+.apple.com","+.itunes.apple.com","+.apps.apple.com","+.mzstatic.com","+.icloud.com","+.icloud-content.com","+.pvp.net","+.riotgames.com","+.openai.com","+.oaistatic.com","+.oaiusercontent.com","+.chatgpt.com"]
   skip-src-address: ["127.0.0.0/8","::1/128"]
   skip-dst-address: ["17.0.0.0/8","149.154.160.0/20","91.108.0.0/16"]
 
@@ -209,12 +220,12 @@ rules:
   - RULE-SET,icloud,🍎苹果服务
   - RULE-SET,Apple,🍎苹果服务
   - RULE-SET,twitter,🌍全球加速
-  - RULE-SET,cloudflare-ip,🌍全球加速,no-resolve
-  - RULE-SET,cloudfront-ip,🌍全球加速,no-resolve
-  - RULE-SET,fastly-ip,🌍全球加速,no-resolve
   - RULE-SET,greatfire,🌍全球加速
   - RULE-SET,gfw,🌍全球加速
   - RULE-SET,geolocation-!cn,🌍全球加速
+  - RULE-SET,cloudflare-ip,🌍全球加速,no-resolve
+  - RULE-SET,cloudfront-ip,🌍全球加速,no-resolve
+  - RULE-SET,fastly-ip,🌍全球加速,no-resolve
   - RULE-SET,games-cn,🎯直连
   - RULE-SET,bilibili,📺哔哩哔哩
   - RULE-SET,xiaohongshu,📕小红书
@@ -232,9 +243,9 @@ rule-anchor:
   class-yaml: &class-yaml {type: http, behavior: classical, interval: 86400, format: yaml}
   
 rule-providers:
-  reject: {<<: *mrs-domain, url: "https://gh-proxy.com/https://raw.githubusercontent.com/bgpeer/rules/main/geo/geosite/category-ads-all.mrs"}
   PersonalUseProxy: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/ClashFiles/PersonalUseProxy.yaml"}
   PersonalUseDirect: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/ClashFiles/PersonalUseDirect.yaml"}
+  reject: {<<: *mrs-domain, url: "https://gh-proxy.com/https://raw.githubusercontent.com/bgpeer/rules/main/geo/geosite/category-ads-all.mrs"}
   douyin-zj: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/bgpeer/rules/main/geo/geosite/bytedance.yaml"}
   TikTok-zj: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/bgpeer/rules/main/geo/geosite/tiktok.yaml"}
   Telegram-zj: {<<: *class-yaml, url: "https://gh-proxy.com/https://raw.githubusercontent.com/bgpeer/rules/main/geo/geosite/telegram.yaml"}
