@@ -1,0 +1,114 @@
+name: Convert All YAML Rules To MRS
+
+on:
+
+  # YAML文件变化自动触发
+  push:
+    paths:
+      - "Rules/*.yaml"
+
+  # 手动触发
+  workflow_dispatch:
+
+
+permissions:
+  contents: write
+
+
+jobs:
+
+  convert:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+      # 拉取代码
+      - name: Checkout
+        uses: actions/checkout@v4
+
+
+
+      # 安装 Mihomo
+      - name: Install Mihomo
+        run: |
+
+          URL=$(curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
+          | grep browser_download_url \
+          | grep linux-amd64-v1 \
+          | head -1 \
+          | cut -d '"' -f4)
+
+
+          echo $URL
+
+
+          wget -q "$URL" -O mihomo.gz
+
+
+          gzip -d mihomo.gz
+
+
+          chmod +x mihomo
+
+
+          sudo mv mihomo /usr/local/bin/
+
+
+          mihomo -v
+
+
+
+
+      # 批量转换
+      - name: Convert YAML files
+
+        run: |
+
+          mkdir -p mrs
+
+
+          for file in Rules/*.yaml
+          do
+
+            # 没有文件跳过
+            [ -e "$file" ] || continue
+
+
+            name=$(basename "$file" .yaml)
+
+            echo "Convert $file -> Rules/$name.mrs"
+
+
+            mihomo convert-ruleset \
+              domain \
+              yaml \
+              "$file" \
+              "Rules/$name.mrs"
+
+
+           done
+
+
+
+      # 查看生成结果
+      - name: Check files
+
+        run: |
+
+          ls -lh Rules/*.mrs
+
+
+
+
+      # 提交更新
+      - name: Commit MRS files
+
+        uses: EndBug/add-and-commit@v9
+
+        with:
+
+          message: "Auto update MRS files"
+
+          add: "Rules/*.mrs"
