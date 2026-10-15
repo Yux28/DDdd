@@ -5,7 +5,7 @@
 
 # ███████████████████████████ 锚点区域 ███████████████████████████
 # ══ 订阅锚点 ══
-Anchor_PR: &Anchor_PR {type: http, interval: 864000, proxy: DIRECT, health-check: {enable: true, url: 'https://www.gstatic.com/generate_204', interval: 300}, filter: "^(?!.*(群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|日期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|境外|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author)).*$"}
+Anchor_PR: &Anchor_PR {type: http, interval: 864000, proxy: DIRECT, health-check: {enable: true, url: 'https://www.gstatic.com/generate_204', interval: 300}, filter: "^(?!.*(到期|过期|剩余|网址|官网|邮箱|订阅|套餐|流量|说明|重置)).*$"}
 # ══ 出站锚点 ══
 Anchor_PG: &Anchor_PG {type: select, proxies: [香港-故转, 台湾-故转, 日本-故转, 新加坡-故转, 韩国-故转, 美国-故转, 欧洲-故转, 其他-故转, 香港-自动, 台湾-自动, 日本-自动, 新加坡-自动, 韩国-自动, 美国-自动, 欧洲-自动, 其他-自动, 香港-手动, 台湾-手动, 日本-手动, 新加坡-手动, 韩国-手动, 美国-手动, 欧洲-手动, 其他-手动, 全球-手动, 国内直连]}
 Anchor_OP: &Anchor_OP {type: select, proxies: [一键代理, 香港-故转, 台湾-故转, 日本-故转, 新加坡-故转, 韩国-故转, 美国-故转, 欧洲-故转, 其他-故转, 香港-自动, 台湾-自动, 日本-自动, 新加坡-自动, 韩国-自动, 美国-自动, 欧洲-自动, 其他-自动, 香港-手动, 台湾-手动, 日本-手动, 新加坡-手动, 韩国-手动, 美国-手动, 欧洲-手动, 其他-手动, 全球-手动, 国内直连]}
@@ -18,7 +18,7 @@ Anchor_UT: &Anchor_UT {type: url-test, empty-fallback: REJECT, interval: 300, la
 # ══ 规则锚点 ══
 Anchor_DN: &Anchor_DN {type: http, interval: 86400, behavior: domain, format: mrs}
 Anchor_IP: &Anchor_IP {type: http, interval: 86400, behavior: ipcidr, format: mrs}
-Anchor_CL: &Anchor_CL {type: http, interval: 86400, behavior: classical, format: mrs}
+Anchor_CL: &Anchor_CL {type: http, interval: 86400, behavior: classical, format: yaml}
 # ══ 区域锚点 ══
 Anchor_HK: &Anchor_HK '(?i)^(?=.*(香港|(?<![a-zA-Z])(hk|hkg)(?![a-zA-Z])|hongkong|hong kong|🇭🇰)).*$'
 Anchor_TW: &Anchor_TW '(?i)^(?=.*(台湾|(?<![a-zA-Z])(tw|tpe|khh|tsa)(?![a-zA-Z])|taiwan|taipei|🇹🇼)).*$'
@@ -176,7 +176,6 @@ proxy-groups:
 # ███████████████████████████ 规则匹配 ███████████████████████████
 rules:
   - AND,((NETWORK,UDP),(DST-PORT,443),(NOT,((OR,((RULE-SET,cn_domain),(RULE-SET,cn_ip,no-resolve)))))),REJECT
-  - RULE-SET,adsall_domain,REJECT                                       # 广告
   - RULE-SET,personaluseproxy_domain,一键代理                            # 自用代理
   - RULE-SET,personalusedirect_domain,国内直连                           # 自用直连
   - RULE-SET,private_domain,国内直连                                     # Private
@@ -216,7 +215,6 @@ rule-providers:
 # ══ 域名规则 ══
   personaluseproxy_domain:   { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/Rules/PersonalUseProxy.mrs"}
   personalusedirect_domain:  { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/Rules/PersonalUseDirect.mrs"}
-  adsall_domain:         { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs"}
   private_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
   games@cn_domain:       { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games@cn.mrs"}
   ai-!cn_domain:         { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs" }
