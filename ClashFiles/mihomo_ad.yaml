@@ -81,18 +81,18 @@ sniffer:
     TLS:  { ports: [443, 8443] }                                        # 嗅探参数  HTTPS（TLS）常用及备用端口
     HTTP: { ports: [80, 8080-8880] }                                    # 嗅探参数  HTTP 及常见 Web / 代理端口段
   force-domain:
-    - "+.tiktok.com"                                                      # 强制嗅探  TikTok 流媒体
-    - "+.netflix.com"                                                     # 强制嗅探  Netflix 主域名
-    - "+.nflxvideo.net"                                                   # 强制嗅探  Netflix CDN
-    - "+.amazonaws.com"                                                   # 强制嗅探  AWS 云服务
-    - "+.media.dssott.com"                                                # 强制嗅探  Disney+ 流媒体
+    - "+.tiktok.com"                                                    # 强制嗅探  TikTok 流媒体
+    - "+.netflix.com"                                                   # 强制嗅探  Netflix 主域名
+    - "+.nflxvideo.net"                                                 # 强制嗅探  Netflix CDN
+    - "+.amazonaws.com"                                                 # 强制嗅探  AWS 云服务
+    - "+.media.dssott.com"                                              # 强制嗅探  Disney+ 流媒体
   skip-domain:
-    - "+.mi.com"                                                          # 跳过嗅探  小米相关服务
-    - "+.xiaomi.com"                                                      # 跳过嗅探  小米官方服务
-    - "+.miwifi.com"                                                      # 跳过嗅探  小米网络服务
-    - "+.oray.com"                                                        # 跳过嗅探  花生壳服务
-    - "+.sunlogin.net"                                                    # 跳过嗅探  向日葵远程控制
-    - "+.push.apple.com"                                                  # 跳过嗅探  苹果推送服务
+    - "+.mi.com"                                                        # 跳过嗅探  小米相关服务
+    - "+.xiaomi.com"                                                    # 跳过嗅探  小米官方服务
+    - "+.miwifi.com"                                                    # 跳过嗅探  小米网络服务
+    - "+.oray.com"                                                      # 跳过嗅探  花生壳服务
+    - "+.sunlogin.net"                                                  # 跳过嗅探  向日葵远程控制
+    - "+.push.apple.com"                                                # 跳过嗅探  苹果推送服务
 # ══ hosts配置 ══
 hosts:
   'services.googleapis.cn': ['services.googleapis.com']                 # 谷歌商店  解决无法下载的问题
@@ -180,8 +180,8 @@ proxy-groups:
 rules:
   - AND,((RULE-SET,cn!_domain),(DST-PORT,443),(NETWORK,UDP)),REJECT     # 禁用国外 QUIC 流量
   - RULE-SET,adblock_domain,REJECT                                      # 广告域名
-  - RULE-SET,personaluseproxy_domain,一键代理                            # 自用代理
-  - RULE-SET,personalusedirect_domain,国内直连                           # 自用直连
+  - RULE-SET,my_proxy_domain,一键代理                                    # 自用代理
+  - RULE-SET,my_direct_domain,国内直连                                   # 自用直连
   - RULE-SET,private_domain,国内直连                                     # 私有域名
   - RULE-SET,private_ip,国内直连,no-resolve                              # 私有IP
   - RULE-SET,games@cn_domain,国内直连                                    # 国内游戏 
@@ -215,8 +215,9 @@ rules:
 # ███████████████████████████ 规则来源 ███████████████████████████
 rule-providers: 
 # ══ 域名规则 ══
-  personaluseproxy_domain:   { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/Rules/PersonalUseProxy.mrs"}
-  personalusedirect_domain:  { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/Rules/PersonalUseDirect.mrs"}
+  adblock_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomo.mrs"}
+  my_proxy_domain:       { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/Rules/PersonalUseProxy.mrs"}
+  my_direct_domain:      { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/Rules/PersonalUseDirect.mrs"}
   private_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
   games@cn_domain:       { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games@cn.mrs"}
   ai-!cn_domain:         { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs" }
@@ -238,7 +239,6 @@ rule-providers:
   cn!_domain:            { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
   cn_domain:             { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs"}
   add_cn_domain:         { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Seven1echo/Yaml/refs/heads/main/rules/Seven1_Direct_Domain.mrs"}
-  adblock_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomo.mrs"}
 # ══ IP规则 ══
   private_ip:            { <<: *Anchor_IP, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs"}
   google_ip:             { <<: *Anchor_IP, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs"}
