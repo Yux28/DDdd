@@ -79,17 +79,18 @@ sniffer:
     TLS:  { ports: [443, 8443] }                                        # 嗅探参数  HTTPS（TLS）常用及备用端口
     HTTP: { ports: [80, 8080-8880] }                                    # 嗅探参数  HTTP 及常见 Web / 代理端口段
   force-domain:
-    - "+.netflix.com"                                                   # 强制嗅探  Netflix 主域名
-    - "+.nflxvideo.net"                                                 # 强制嗅探  Netflix CDN
-    - "+.amazonaws.com"                                                 # 强制嗅探  AWS 云服务
-    - "+.media.dssott.com"                                              # 强制嗅探  Disney+ 流媒体
-    - "+.tiktok.com"                                                    # 强制嗅探  TikTok 流媒体
+    - "+.tiktok.com"                                                      # 强制嗅探  TikTok 流媒体
+    - "+.netflix.com"                                                     # 强制嗅探  Netflix 主域名
+    - "+.nflxvideo.net"                                                   # 强制嗅探  Netflix CDN
+    - "+.amazonaws.com"                                                   # 强制嗅探  AWS 云服务
+    - "+.media.dssott.com"                                                # 强制嗅探  Disney+ 流媒体
   skip-domain:
-    - Mijia Cloud                                                       # 跳过嗅探  米家云服务
-    - dlg.io.mi.com                                                     # 跳过嗅探  小米设备通信
-    - "+.oray.com"                                                      # 跳过嗅探  花生壳服务
-    - "+.sunlogin.net"                                                  # 跳过嗅探  向日葵远程控制
-    - "+.push.apple.com"                                                # 跳过嗅探  苹果推送服务
+    - "+.mi.com"                                                          # 跳过嗅探  小米相关服务
+    - "+.xiaomi.com"                                                      # 跳过嗅探  小米官方服务
+    - "+.miwifi.com"                                                      # 跳过嗅探  小米网络服务
+    - "+.oray.com"                                                        # 跳过嗅探  花生壳服务
+    - "+.sunlogin.net"                                                    # 跳过嗅探  向日葵远程控制
+    - "+.push.apple.com"                                                  # 跳过嗅探  苹果推送服务
 # ══ hosts配置 ══
 hosts:
   'services.googleapis.cn': ['services.googleapis.com']                 # 谷歌商店  解决无法下载的问题
@@ -109,8 +110,8 @@ dns:
   fake-ip-filter:
     - "+.lan"                                                           # 真实解析  常见局域网域名后缀
     - "+.local"                                                         # 真实解析  常见局域网域名后缀
-    - "rule-set:add_direct_domain"                                      # 真实解析  大陆冷门域名
     - "rule-set:cn_domain"                                              # 真实解析  大陆域名数据
+    - "rule-set:add_cn_domain"                                          # 真实解析  大陆冷门域名
   nameserver:                                                           # 解析服务  请使用运营商提供的 DNS
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
@@ -144,7 +145,7 @@ proxy-groups:
   - {name: Apple,        <<: *Anchor_LD, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Apple.png}
   - {name: Steam,        <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Steam.png}
   - {name: TikTok,       <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/TikTok.png}
-  - {name: Twitter(X),   <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Twitter.png}
+  - {name: X,            <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/X.png}
   - {name: Telegram,     <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Telegram.png}
   - {name: Netflix,      <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Netflix.png}
   - {name: Disney,       <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Disney.png}
@@ -175,13 +176,13 @@ proxy-groups:
 
 # ███████████████████████████ 规则匹配 ███████████████████████████
 rules:
-  - AND,((NETWORK,UDP),(DST-PORT,443),(NOT,((OR,((RULE-SET,cn_domain),(RULE-SET,cn_ip,no-resolve)))))),REJECT
+  - AND,((RULE-SET,cn!_domain),(DST-PORT,443),(NETWORK,UDP)),REJECT     # 禁用国外 QUIC 流量
   - RULE-SET,personaluseproxy_domain,一键代理                            # 自用代理
   - RULE-SET,personalusedirect_domain,国内直连                           # 自用直连
-  - RULE-SET,private_domain,国内直连                                     # Private
-  - RULE-SET,private_ip,国内直连,no-resolve                              # Private
-  - RULE-SET,games@cn_domain,国内直连                                    # 游戏直连
-  - RULE-SET,ai-!cn_domain,AI                                           # AI(国际)
+  - RULE-SET,private_domain,国内直连                                     # 私有域名
+  - RULE-SET,private_ip,国内直连,no-resolve                              # 私有IP
+  - RULE-SET,games@cn_domain,国内直连                                    # 国内游戏 
+  - RULE-SET,ai-!cn_domain,AI                                           # 国外AI
   - RULE-SET,youtube_domain,YouTube                                     # YouTube
   - RULE-SET,google_domain,Google                                       # Google
   - RULE-SET,github_domain,GitHub                                       # GitHub
@@ -190,20 +191,19 @@ rules:
   - RULE-SET,apple_domain,Apple                                         # 苹果服务
   - RULE-SET,steam_domain,Steam                                         # Steam
   - RULE-SET,tiktok_domain,TikTok                                       # TikTok
-  - RULE-SET,twitter_domain,Twitter(X)                                  # Twitter(X)
+  - RULE-SET,x_domain,X                                                 # X(Twitter)
   - RULE-SET,telegram_domain,Telegram                                   # Telegram
   - RULE-SET,netflix_domain,Netflix                                     # Netflix
   - RULE-SET,disney_domain,Disney                                       # Disney+
   - RULE-SET,spotify_domain,Spotify                                     # Spotify
   - RULE-SET,paypal_domain,PayPal                                       # PayPal
   - RULE-SET,speedtest_domain,Speedtest                                 # Speedtest
+  - RULE-SET,cn!_domain,一键代理                                         # 境外代理
   - RULE-SET,google_ip,Google,no-resolve                                # Google
   - RULE-SET,telegram_ip,Telegram,no-resolve                            # Telegram
-  - RULE-SET,twitter_ip,Twitter(X),no-resolve                           # Twitter
   - RULE-SET,netflix_ip,Netflix,no-resolve                              # Netflix
-  - RULE-SET,geolocation-!cn,一键代理                                    # 排除国内
-  - RULE-SET,add_direct_domain,国内直连                                  # 直连域名
   - RULE-SET,cn_domain,国内直连                                          # 中国域名
+  - RULE-SET,add_cn_domain,国内直连                                      # 直连域名
   - RULE-SET,cn_ip,国内直连,no-resolve                                   # 中国IP
   - MATCH,漏网之鱼                                                       # 兜底规则
 
@@ -225,21 +225,20 @@ rule-providers:
   apple_domain:          { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"}
   steam_domain:          { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"}
   tiktok_domain:         { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs"}
-  twitter_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs"}
+  x_domain:              { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/x.mrs"}
   telegram_domain:       { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
   netflix_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
   disney_domain:         { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/disney.mrs"}
   spotify_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.mrs"}
   paypal_domain:         { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
   speedtest_domain:      { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-speedtest.mrs"}
-  geolocation-!cn:       { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
+  cn!_domain:            { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
   cn_domain:             { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs"}
-  add_direct_domain:     { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Seven1echo/Yaml/refs/heads/main/rules/Seven1_Direct_Domain.mrs"}
+  add_cn_domain:         { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Seven1echo/Yaml/refs/heads/main/rules/Seven1_Direct_Domain.mrs"}
 # ══ IP规则 ══
   private_ip:            { <<: *Anchor_IP, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs"}
   google_ip:             { <<: *Anchor_IP, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs"}
   telegram_ip:           { <<: *Anchor_IP, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs"}
-  twitter_ip:            { <<: *Anchor_IP, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/twitter.mrs"}
   netflix_ip:            { <<: *Anchor_IP, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs"}
   cn_ip:                 { <<: *Anchor_IP, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs"}
 
