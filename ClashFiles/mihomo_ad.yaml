@@ -137,7 +137,8 @@ proxy-groups:
   - {name: 其他-手动,     <<: *Anchor_HS, filter: *Anchor_OT, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/OT.png}
   - {name: 全球-手动,     <<: *Anchor_HS,                     icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Global.png}  
 
-  - {name: 漏网之鱼,      <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/MATCH.png} 
+  - {name: DorP,         <<: *Anchor_LD, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Direct.png}
+  - {name: 漏网之鱼,      <<: *Anchor_LD, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/MATCH.png} 
   - {name: AI,           <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Ai.png}
   - {name: YouTube,      <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/YouTube.png}
   - {name: Google,       <<: *Anchor_OP, icon: https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/icons/Google.png}
@@ -181,7 +182,7 @@ rules:
   - AND,((RULE-SET,cn!_domain),(DST-PORT,443),(NETWORK,UDP)),REJECT     # 禁用国外 QUIC 流量
   - RULE-SET,adblock_domain,REJECT                                      # 广告域名
   - RULE-SET,my_proxy_domain,一键代理                                    # 自用代理
-  - RULE-SET,my_direct_domain,国内直连                                   # 自用直连
+  - RULE-SET,my_direct_domain,DorP                                      # 自用直连
   - RULE-SET,private_domain,国内直连                                     # 私有域名
   - RULE-SET,private_ip,国内直连,no-resolve                              # 私有IP
   - RULE-SET,games@cn_domain,国内直连                                    # 国内游戏 
