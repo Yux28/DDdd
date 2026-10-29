@@ -13,8 +13,8 @@ Anchor_LD: &Anchor_LD {type: select, proxies: [国内直连, 一键代理, 香�
 Anchor_DR: &Anchor_DR {type: select, proxies: [DIRECT], hidden: true}
 # ══ 策略锚点 ══
 Anchor_HS: &Anchor_HS {type: select, empty-fallback: REJECT, include-all: true}
-Anchor_FB: &Anchor_FB {type: fallback, empty-fallback: REJECT, interval: 300, lazy: false, timeout: 3000, max-failed-times: 2, hidden: true, url: 'https://www.gstatic.com/generate_204'}
-Anchor_UT: &Anchor_UT {type: url-test, empty-fallback: REJECT, interval: 300, lazy: false, timeout: 3000, max-failed-times: 2, hidden: true, url: 'https://www.gstatic.com/generate_204', tolerance: 50, include-all: true}
+Anchor_FB: &Anchor_FB {type: fallback, empty-fallback: REJECT, interval: 300, lazy: true, timeout: 3000, max-failed-times: 2, hidden: true, url: 'https://www.gstatic.com/generate_204'}
+Anchor_UT: &Anchor_UT {type: url-test, empty-fallback: REJECT, interval: 300, lazy: true, timeout: 3000, max-failed-times: 2, hidden: true, url: 'https://www.gstatic.com/generate_204', tolerance: 50, include-all: true}
 # ══ 规则锚点 ══
 Anchor_DN: &Anchor_DN {type: http, interval: 86400, behavior: domain, format: mrs}
 Anchor_IP: &Anchor_IP {type: http, interval: 86400, behavior: ipcidr, format: mrs}
@@ -54,8 +54,8 @@ tcp-concurrent: true                                                    # 并发
 profile: { store-selected: true, store-fake-ip: true }                  # 保存选择  记住选择的节点和策略组、Fake-IP 映射
 find-process-mode: always                                               # 进程查找  always（开启，强制匹配所有进程）/ strict（默认，由 Clash 判断是否开启）/ off（不匹配进程，推荐在路由器上使用此模式）
 # ══ 管理面板 ══
-external-ui-url: https://gh-proxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
-external-controller: 0.0.0.0:9090                                       # 面板地址
+external-ui-url: https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
+external-controller: 127.0.0.1:9090                                     # 面板地址
 external-ui-name: zashboard                                             # 面板名称
 external-ui: ui                                                         # 面板目录
 secret: ""                                                              # 面板密码
