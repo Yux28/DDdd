@@ -216,7 +216,7 @@ rules:
 # ███████████████████████████ 规则来源 ███████████████████████████
 rule-providers: 
 # ══ 域名规则 ══
-  adblock_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomo.mrs"}
+  adblock_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://github.com/217heidai/adblockfilters/releases/download/rule/adblockmihomo.mrs"}
   my_proxy_domain:       { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/Rules/PersonalUseProxy.mrs"}
   my_direct_domain:      { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/Yux28/DDdd/refs/heads/main/Rules/PersonalUseDirect.mrs"}
   private_domain:        { <<: *Anchor_DN, url: "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
